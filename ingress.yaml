@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: abdm-callback-ingress
+  labels:
+    environment: dev
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dev.lite.mybahmni.in
+      http:
+        paths:
+          - path: /callback
+            pathType: Prefix
+            backend:
+              service:
+                name: abdm-callback-proxy
+                port:
+                  number: 9099

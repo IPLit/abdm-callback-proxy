@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: abdm-callback-proxy
+    environment: dev
+  name: abdm-callback-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: abdm-callback-proxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: abdm-callback-proxy
+        environment: dev
+    spec:
+      containers:
+        - image: n0man/abdm-callback-proxy
+          name: abdm-callback-proxy
+          imagePullPolicy: Always
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: abdm-callback-proxy
+spec:
+  ports:
+    - name: '9099'
+      port: 9099
+      targetPort: 80
+  selector:
+    app: abdm-callback-proxy
+    environment: dev
+  type: NodePort
