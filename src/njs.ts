@@ -1,21 +1,36 @@
+const deligateRepository: { [key: string]: string } = {
+  Bahmni: 'dev.lite.mybahmni.in',
+  'Bahmni-QA': 'qa.lite.mybahmni.in',
+  Demo: 'lite.mybahmni.in',
+  performance: 'performance.lite.mybahmni.in',
+};
+
 function deligate(request: NginxHTTPRequest) {
-  for (const h in request.headersIn) {
-    request.log("header '" + h + "' is '" + request.headersIn[h]);
-  }
-  //checking for header
-  if (request.headersIn['X-HIU-ID']) {
+  if (
+    request.headersIn['X-HIU-ID'] &&
+    deligateRepository.hasOwnProperty(request.headersIn['X-HIU-ID'].toString())
+  ) {
     request.log(
       `routing for headersIn.X-HIU-ID: ${request.headersIn['X-HIU-ID']}`,
     );
     request.internalRedirect(
-      '/callback/deligate?deligate_url=lite.mybahmni.in/openmrs/ws/rest/v1/hip/existingPatients/gokul@sbx',
+      `/deligate?deligate_url=${deligateUrl(
+        request.uri,
+        request.headersIn['X-HIU-ID'],
+      )}`,
     );
-  } else if (request.headersIn['X-HIP-ID']) {
+  } else if (
+    request.headersIn['X-HIP-ID'] &&
+    deligateRepository.hasOwnProperty(request.headersIn['X-HIP-ID'].toString())
+  ) {
     request.log(
       `routing for headersIn.X-HIP-ID: ${request.headersIn['X-HIP-ID']}`,
     );
     request.internalRedirect(
-      '/callback/deligate?deligate_url=lite.mybahmni.in?hip=X-HIP-ID',
+      `/deligate?deligate_url=${deligateUrl(
+        request.uri,
+        request.headersIn['X-HIP-ID'],
+      )}`,
     );
   } else {
     request.log(`No heders matched - showing summary`);
@@ -34,6 +49,13 @@ function deligate(request: NginxHTTPRequest) {
 
     request.finish();
   }
+}
+
+function deligateUrl(requestUri: String, key: string): string {
+  const deligatePath =
+    deligateRepository[key] + requestUri.replace(/callback/i, 'hiprovider');
+
+  return deligatePath;
 }
 
 export default { deligate };

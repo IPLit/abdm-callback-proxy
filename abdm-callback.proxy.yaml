@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: abdm-callback-proxy
-    environment: dev
+    environment: default
   name: abdm-callback-proxy
 spec:
   replicas: 1
@@ -16,7 +16,7 @@ spec:
     metadata:
       labels:
         app: abdm-callback-proxy
-        environment: dev
+        environment: default
     spec:
       containers:
         - image: n0man/abdm-callback-proxy
@@ -35,5 +35,5 @@ spec:
       targetPort: 80
   selector:
     app: abdm-callback-proxy
-    environment: dev
+    environment: default
   type: NodePort
