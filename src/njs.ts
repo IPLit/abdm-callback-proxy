@@ -58,4 +58,4 @@ function deligateUrl(requestUri: String, key: string): string {
   return deligatePath;
 }
 
-export default { deligate };
+export default { deligate, deligateUrl };
