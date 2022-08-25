@@ -1,0 +1,8 @@
+image:
+  repository: bahmniindiadistro
+  name: abdm-callback-proxy
+  tag: latest
+
+ingress:
+  host: abdm-proxy.lite.mybahmni.in
+
