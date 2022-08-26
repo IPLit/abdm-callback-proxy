@@ -1,5 +1,0 @@
-apiVersion: v2
-name: abdm-callback-proxy
-description: Helm chart for abdm-callback-proxy
-type: application
-version: 1.0.0
