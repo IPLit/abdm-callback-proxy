@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" ",
     "lint": "eslint 'src/**/*.ts' --fix",
     "refresh": "yarn build && docker rm -f abdm-callback-proxy && docker build -t abdm-callback-proxy . && docker run -d -p 8080:80 --name abdm-callback-proxy abdm-callback-proxy",
-    "rollout": "yarn build && docker build -t n0man/abdm-callback-proxy . && docker push n0man/abdm-callback-proxy && kubectl rollout restart deployment abdm-callback-proxy",
+    "rollout": "yarn build && docker build -t bahmniindiadistro/abdm-callback-proxy . && docker push bahmniindiadistro/abdm-callback-proxy && kubectl rollout restart deployment abdm-callback-proxy",
     "test": "jest"
   },
   "keywords": [],

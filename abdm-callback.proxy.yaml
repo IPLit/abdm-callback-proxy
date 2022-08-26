@@ -19,7 +19,7 @@ spec:
         environment: default
     spec:
       containers:
-        - image: n0man/abdm-callback-proxy
+        - image: bahmniindiadistro/abdm-callback-proxy
           name: abdm-callback-proxy
           imagePullPolicy: Always
       restartPolicy: Always
