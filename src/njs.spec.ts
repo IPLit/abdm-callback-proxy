@@ -2,7 +2,7 @@ import { createMock } from 'ts-auto-mock';
 import { On, method } from 'ts-auto-mock/extension';
 import njs from './njs';
 
-test('it should deligate callback to correct HIU based on the header', () => {
+test('it should delegate callback to correct HIU based on the header', () => {
   const mockRequest: NginxHTTPRequest = createMock<NginxHTTPRequest>({
     args: {
       test: '123',
@@ -21,15 +21,15 @@ test('it should deligate callback to correct HIU based on the header', () => {
     method((request) => request.internalRedirect),
   );
 
-  njs.deligate(mockRequest);
+  njs.delegate(mockRequest);
 
   expect(mockInternalRedirect).toHaveBeenCalledTimes(1);
   expect(mockInternalRedirect).toBeCalledWith(
-    '/deligate?deligate_url=dev.lite.mybahmni.in/hiprovider/v0.5/hip/on-fetch-modes',
+    '/delegate?delegate_url=dev.lite.mybahmni.in/hiprovider/v0.5/hip/on-fetch-modes',
   );
 });
 
-test('it should deligate callback to correct HIP based on the header', () => {
+test('it should delegate callback to correct HIP based on the header', () => {
   const mockRequest: NginxHTTPRequest = createMock<NginxHTTPRequest>({
     args: {
       test: '123',
@@ -48,11 +48,11 @@ test('it should deligate callback to correct HIP based on the header', () => {
     method((request) => request.internalRedirect),
   );
 
-  njs.deligate(mockRequest);
+  njs.delegate(mockRequest);
 
   expect(mockInternalRedirect).toHaveBeenCalledTimes(1);
   expect(mockInternalRedirect).toBeCalledWith(
-    '/deligate?deligate_url=lite.mybahmni.in/hiprovider/testabc',
+    '/delegate?delegate_url=lite.mybahmni.in/hiprovider/testabc',
   );
 });
 
@@ -81,7 +81,7 @@ test('return default response for inappropiate header', () => {
     method((request) => request.internalRedirect),
   );
 
-  njs.deligate(mockRequest);
+  njs.delegate(mockRequest);
 
   expect(mockInternalRedirect).toHaveBeenCalledTimes(0);
   expect(mockSendHeader).toHaveBeenCalledTimes(1);
