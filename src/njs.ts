@@ -1,33 +1,33 @@
-const deligateRepository: { [key: string]: string } = {
+const delegateRepository: { [key: string]: string } = {
   Bahmni: 'dev.lite.mybahmni.in',
   'Bahmni-QA': 'qa.lite.mybahmni.in',
   Demo: 'lite.mybahmni.in',
   performance: 'performance.lite.mybahmni.in',
 };
 
-function deligate(request: NginxHTTPRequest) {
+function delegate(request: NginxHTTPRequest) {
   if (
     request.headersIn['X-HIU-ID'] &&
-    deligateRepository.hasOwnProperty(request.headersIn['X-HIU-ID'].toString())
+    delegateRepository.hasOwnProperty(request.headersIn['X-HIU-ID'].toString())
   ) {
     request.log(
       `routing for headersIn.X-HIU-ID: ${request.headersIn['X-HIU-ID']}`,
     );
     request.internalRedirect(
-      `/deligate?deligate_url=${deligateUrl(
+      `/delegate?delegate_url=${delegateUrl(
         request.uri,
         request.headersIn['X-HIU-ID'],
       )}`,
     );
   } else if (
     request.headersIn['X-HIP-ID'] &&
-    deligateRepository.hasOwnProperty(request.headersIn['X-HIP-ID'].toString())
+    delegateRepository.hasOwnProperty(request.headersIn['X-HIP-ID'].toString())
   ) {
     request.log(
       `routing for headersIn.X-HIP-ID: ${request.headersIn['X-HIP-ID']}`,
     );
     request.internalRedirect(
-      `/deligate?deligate_url=${deligateUrl(
+      `/delegate?delegate_url=${delegateUrl(
         request.uri,
         request.headersIn['X-HIP-ID'],
       )}`,
@@ -51,11 +51,11 @@ function deligate(request: NginxHTTPRequest) {
   }
 }
 
-function deligateUrl(requestUri: String, key: string): string {
-  const deligatePath =
-    deligateRepository[key] + requestUri.replace(/callback/i, 'hiprovider');
+function delegateUrl(requestUri: String, key: string): string {
+  const delegatePath =
+    delegateRepository[key] + requestUri.replace(/callback/i, 'hiprovider');
 
-  return deligatePath;
+  return delegatePath;
 }
 
-export default { deligate };
+export default { delegate };
