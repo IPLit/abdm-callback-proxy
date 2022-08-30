@@ -37,7 +37,7 @@ test('it should delegate callback to correct HIP based on the header', () => {
     headersIn: {
       Cookie: 'login=success',
       host: 'local.test',
-      'X-HIP-ID': 'Demo',
+      'X-HIP-ID': 'Bahmni-Demo',
     },
     method: 'GET',
     uri: '/callback/testabc',
