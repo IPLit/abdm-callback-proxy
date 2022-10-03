@@ -1,5 +1,5 @@
 const delegateRepository: { [key: string]: string } = {
-  'dev': 'dev.bahmnilite.in',
+  'devlite': 'dev.bahmnilite.in',
   'clinic1': 'clinic1.bahmnilite.in',
   'clinic2': 'clinic2.bahmnilite.in',
 };
