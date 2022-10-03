@@ -19,8 +19,8 @@ spec:
         environment: default
     spec:
       containers:
-        - image: infoiplitin/iplit-abdm-callback-proxy
-          name: abdm-callback-proxy
+        - image: infoiplitin/iplit-abdm-callback-proxy:latest
+          name: iplit-abdm-callback-proxy
           imagePullPolicy: Always
       restartPolicy: Always
 ---
