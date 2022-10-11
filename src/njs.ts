@@ -1,6 +1,6 @@
 const delegateRepository: { [key: string]: string } = {
   'Shree Clinic': 'shreeclinic.bahmnilite.in',
-  'clinic1': 'clinic1.bahmnilite.in',
+  'IN2710000189': 'clinic1.bahmnilite.in',
   'clinic2': 'clinic2.bahmnilite.in',
 };
 
