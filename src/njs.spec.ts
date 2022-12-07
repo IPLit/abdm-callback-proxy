@@ -25,7 +25,7 @@ test('it should delegate callback to correct HIU based on the header', () => {
 
   expect(mockInternalRedirect).toHaveBeenCalledTimes(1);
   expect(mockInternalRedirect).toBeCalledWith(
-    '/delegate?delegate_url=dev.lite.mybahmni.in/hiprovider/v0.5/hip/on-fetch-modes',
+    '/delegate?delegate_url=dev.bahmnilite.in/hiprovider/v0.5/hip/on-fetch-modes',
   );
 });
 
@@ -52,7 +52,7 @@ test('it should delegate callback to correct HIP based on the header', () => {
 
   expect(mockInternalRedirect).toHaveBeenCalledTimes(1);
   expect(mockInternalRedirect).toBeCalledWith(
-    '/delegate?delegate_url=lite.mybahmni.in/hiprovider/testabc',
+    '/delegate?delegate_url=bahmnilite.in/hiprovider/testabc',
   );
 });
 
