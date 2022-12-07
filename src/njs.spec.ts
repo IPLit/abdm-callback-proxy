@@ -51,7 +51,7 @@ test('it should delegate callback to correct HIP based on the header', () => {
 
   njs.delegate(mockRequest);
 
-  //expect(mockInternalRedirect).toHaveBeenCalledTimes(1);
+  // expect(mockInternalRedirect).toHaveBeenCalledTimes(1);
   
   expect(mockInternalRedirect).toBeCalledWith(
     '/delegate?delegate_url=bahmnilite.in/hiprovider/testabc',
