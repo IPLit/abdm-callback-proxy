@@ -38,7 +38,7 @@ test('it should delegate callback to correct HIP based on the header', () => {
     headersIn: {
       Cookie: 'login=success',
       host: 'local.test',
-      'X-HIP-ID': 'Bahmni-Demo',
+      'X-HIP-ID': 'Bahmni',
     },
     method: 'GET',
     uri: '/callback/testabc',
@@ -54,7 +54,7 @@ test('it should delegate callback to correct HIP based on the header', () => {
   // expect(mockInternalRedirect).toHaveBeenCalledTimes(1);
   
   expect(mockInternalRedirect).toBeCalledWith(
-    '/delegate?delegate_url=bahmnilite.in/hiprovider/testabc',
+    '/delegate?delegate_url=dev.bahmnilite.in/hiprovider/testabc',
   );
 });
 
