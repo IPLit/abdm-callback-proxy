@@ -1,8 +1,10 @@
 const delegateRepository: { [key: string]: string } = {
+  'Bahmni': 'dev.bahmnilite.in', // do not remove, it is required for mock tests
   'shreeclinic': 'shreeclinic.bahmnilite.in',
   'iplitclinic1': 'clinic1.bahmnilite.in',
   'clinic2': 'clinic2.bahmnilite.in',
   'iplitclinic3': 'clinic3.bahmnilite.in',
+  'deodharhospital': 'deodharhospital.bahmnilite.in',
 };
 
 function delegate(request: NginxHTTPRequest) {
