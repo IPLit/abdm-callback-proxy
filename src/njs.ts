@@ -1,5 +1,6 @@
+ // do not remove, it is required for mock tests -- 'Bahmni': 'dev.bahmnilite.in'
 const delegateRepository: { [key: string]: string } = {
-  'Bahmni': 'dev.bahmnilite.in', // do not remove, it is required for mock tests
+  'Bahmni': 'dev.bahmnilite.in',
   'shreeclinic': 'shreeclinic.bahmnilite.in',
   'iplitclinic1': 'clinic1.bahmnilite.in',
   'clinic2': 'clinic2.bahmnilite.in',
