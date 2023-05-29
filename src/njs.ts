@@ -36,6 +36,12 @@ function delegate(request: NginxHTTPRequest) {
     );
   } else {
     request.log(`No heders matched - showing summary`);
+    request.log(
+      `routing for headersIn.X-HIP-ID: ${request.headersIn['X-HIP-ID']}`,
+    );
+    request.log(
+      `routing for headersIn.X-HIU-ID: ${request.headersIn['X-HIU-ID']}`,
+    );
     let summary: string;
     summary = 'JS summary\n\n';
     summary += 'Method: ' + request.method + '\n';
