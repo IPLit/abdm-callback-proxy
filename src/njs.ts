@@ -9,42 +9,48 @@ const delegateRepository: { [key: string]: string } = {
 };
 
 function delegate(request: NginxHTTPRequest) {
+
+  let upperCaseHeaders: any = {};
+  Object.keys(request.headersIn).forEach((headerKey) => {
+	upperCaseHeaders[headerKey.toUpperCase()] = request.headersIn[headerKey];
+  });
+
   if (
-    request.headersIn['X-HIU-ID'] &&
-    delegateRepository.hasOwnProperty(request.headersIn['X-HIU-ID'].toString())
+    upperCaseHeaders['X-HIU-ID'] &&
+    delegateRepository.hasOwnProperty(upperCaseHeaders['X-HIU-ID'].toString())
   ) {
     request.log(
-      `routing for headersIn.X-HIU-ID: ${request.headersIn['X-HIU-ID']}`,
+      `routing for headersIn.X-HIU-ID: ${upperCaseHeaders['X-HIU-ID']}`,
     );
     request.internalRedirect(
       `/delegate?delegate_url=${delegateUrl(
         request.uri,
-        request.headersIn['X-HIU-ID'],
+        upperCaseHeaders['X-HIU-ID'],
       )}`,
     );
   } else if (
-    request.headersIn['X-HIP-ID'] &&
-    delegateRepository.hasOwnProperty(request.headersIn['X-HIP-ID'].toString())
+    upperCaseHeaders['X-HIP-ID'] &&
+    delegateRepository.hasOwnProperty(upperCaseHeaders['X-HIP-ID'].toString())
   ) {
     request.log(
-      `routing for headersIn.X-HIP-ID: ${request.headersIn['X-HIP-ID']}`,
+      `routing for headersIn.X-HIP-ID: ${upperCaseHeaders['X-HIP-ID']}`,
     );
     request.internalRedirect(
       `/delegate?delegate_url=${delegateUrl(
         request.uri,
-        request.headersIn['X-HIP-ID'],
+        upperCaseHeaders['X-HIP-ID'],
       )}`,
     );
   } else {
     request.log(`No heders matched - showing summary`);
-    if (request.headersIn['X-HIP-ID']) {
+    if (upperCaseHeaders['X-HIP-ID']) {
        request.log(
-         `routing for headersIn.X-HIP-ID: ${request.headersIn['X-HIP-ID'].toString()}`,
+         `routing for headersIn.X-HIP-ID: ${upperCaseHeaders['X-HIP-ID']}`,
        );
     }
-    if (request.headersIn['X-HIU-ID']) {
+    if (upperCaseHeaders['X-HIU-ID']) {
       request.log(
-        `routing for headersIn.X-HIU-ID: ${request.headersIn['X-HIU-ID'].toString()}`,
+        `routing for headersIn.X-HIU-ID: ${upperCaseHeaders['X-HIU-ID']}`,
       );
     }
     let summary: string;
