@@ -10,10 +10,11 @@ const delegateRepository: { [key: string]: string } = {
 
 function delegate(request: NginxHTTPRequest) {
 
-  let upperCaseHeaders: {};
+  let upperCaseHeaders: any = {};
   Object.keys(request.headersIn).forEach((headerKey) => {
 	request.log('request headersIn headerKey ' + headerKey);
 	upperCaseHeaders[headerKey.toUpperCase()] = request.headersIn[headerKey];
+	request.log('request headersIn key ' + headerKey.toUpperCase() + " = " + upperCaseHeaders[headerKey.toUpperCase()]);
   });
 
   if (
