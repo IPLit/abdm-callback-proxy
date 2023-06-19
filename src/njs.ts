@@ -12,9 +12,9 @@ function delegate(request: NginxHTTPRequest) {
 
   let upperCaseHeaders: any = {};
   Object.keys(request.headersIn).forEach((headerKey) => {
-	request.log('request headersIn headerKey ' + headerKey);
+	// request.log('request headersIn headerKey ' + headerKey);
 	upperCaseHeaders[headerKey.toUpperCase()] = request.headersIn[headerKey];
-	request.log('request headersIn key ' + headerKey.toUpperCase() + " = " + upperCaseHeaders[headerKey.toUpperCase()]);
+	// request.log('request headersIn key ' + headerKey.toUpperCase() + " = " + upperCaseHeaders[headerKey.toUpperCase()]);
   });
 
   if (
@@ -49,8 +49,7 @@ function delegate(request: NginxHTTPRequest) {
        request.log(
          `routing for headersIn.X-HIP-ID: ${upperCaseHeaders['X-HIP-ID']}`,
        );
-    }
-    if (upperCaseHeaders['X-HIU-ID']) {
+    } else if (upperCaseHeaders['X-HIU-ID']) {
       request.log(
         `routing for headersIn.X-HIU-ID: ${upperCaseHeaders['X-HIU-ID']}`,
       );
