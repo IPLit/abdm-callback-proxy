@@ -8,7 +8,8 @@ const delegateRepository: { [key: string]: string } = {
   'deodharhospital': 'deodharhospital.bahmnilite.in',
   'SandhuHospital': 'sandhuhospital.bahmni.in',
   'Get Well Polyclinic': 'getwellpolyclinic.bahmnilite.in',
-  'drbarvaliaclinic': 'drbarvaliaclinic.bahmnilite.in'
+  'drbarvaliaclinic': 'drbarvaliaclinic.bahmnilite.in',
+  'IN0310001453': 'sukhveenhospital.bahmni.in'
 };
 
 function delegate(request: NginxHTTPRequest) {
