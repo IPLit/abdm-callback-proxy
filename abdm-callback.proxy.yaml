@@ -1,3 +1,69 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: abdm-proxy-njs-config
+  labels:
+    app: abdm-callback-proxy
+    environment: default
+data:
+  njs.js: |-
+    var delegateRepository = {
+        Bahmni: 'dev.bahmnilite.in',
+        IN2710015434: 'shreeclinic.bahmnilite.in',
+        iplitclinic1: 'clinic1.bahmnilite.in',
+        IPLitClinic2: 'clinic2.bahmnilite.in',
+        iplitclinic3: 'clinic3.bahmnilite.in',
+        deodharhospital: 'deodharhospital.bahmnilite.in',
+        SandhuHospital: 'sandhuhospital.bahmni.in',
+        'Get Well Polyclinic': 'getwellpolyclinic.bahmnilite.in',
+        drbarvaliaclinic: 'drbarvaliaclinic.bahmnilite.in',
+        IN0310001453: 'sukhveenhospital.bahmni.in',
+    };
+    function delegate(request) {
+        var upperCaseHeaders = {};
+        Object.keys(request.headersIn).forEach(function (headerKey) {
+            // request.log('request headersIn headerKey ' + headerKey);
+            upperCaseHeaders[headerKey.toUpperCase()] = request.headersIn[headerKey];
+            // request.log('request headersIn key ' + headerKey.toUpperCase() + " = " + upperCaseHeaders[headerKey.toUpperCase()]);
+        });
+        if (upperCaseHeaders['X-HIU-ID'] &&
+            delegateRepository.hasOwnProperty(upperCaseHeaders['X-HIU-ID'].toString())) {
+            request.log("routing for headersIn.X-HIU-ID: " + upperCaseHeaders['X-HIU-ID']);
+            request.internalRedirect("/delegate?delegate_url=" + delegateUrl(request.uri, upperCaseHeaders['X-HIU-ID']));
+        }
+        else if (upperCaseHeaders['X-HIP-ID'] &&
+            delegateRepository.hasOwnProperty(upperCaseHeaders['X-HIP-ID'].toString())) {
+            request.log("routing for headersIn.X-HIP-ID: " + upperCaseHeaders['X-HIP-ID']);
+            request.internalRedirect("/delegate?delegate_url=" + delegateUrl(request.uri, upperCaseHeaders['X-HIP-ID']));
+        }
+        else {
+            request.log("No heders matched - showing summary");
+            if (upperCaseHeaders['X-HIP-ID']) {
+                request.log("routing for headersIn.X-HIP-ID: " + upperCaseHeaders['X-HIP-ID']);
+            }
+            else if (upperCaseHeaders['X-HIU-ID']) {
+                request.log("routing for headersIn.X-HIU-ID: " + upperCaseHeaders['X-HIU-ID']);
+            }
+            var summary = void 0;
+            summary = 'JS summary\n\n';
+            summary += 'Method: ' + request.method + '\n';
+            summary += 'HTTP version: ' + request.httpVersion + '\n';
+            summary += 'Host: ' + request.headersIn.host + '\n';
+            summary += 'Remote Address: ' + request.remoteAddress + '\n';
+            summary += 'URI: ' + request.uri + '\n';
+            request.status = 200;
+            request.headersOut['Content-Type'] = 'text/plain; charset=utf-8';
+            request.sendHeader();
+            request.send(summary);
+            request.finish();
+        }
+    }
+    function delegateUrl(requestUri, key) {
+        var delegatePath = delegateRepository[key] + requestUri.replace(/callback/i, 'hiprovider');
+        return delegatePath;
+    }
+    export default { delegate: delegate };
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,9 +84,18 @@ spec:
         app: abdm-callback-proxy
         environment: default
     spec:
+      volumes:
+        - name: abdm-proxy-njs-config
+          configMap:
+            name: abdm-proxy-njs-config
       containers:
         - image: infoiplitin/iplit-abdm-callback-proxy:latest
           name: iplit-abdm-callback-proxy
+          volumeMounts:
+            - name: abdm-proxy-njs-config
+              mountPath: /etc/nginx/njs/njs.js
+              subPath: njs.js
+              readOnly: true
           imagePullPolicy: Always
       restartPolicy: Always
 ---
