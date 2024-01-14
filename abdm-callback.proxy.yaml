@@ -18,6 +18,7 @@ data:
         'Get Well Polyclinic': 'getwellpolyclinic.bahmnilite.in',
         drbarvaliaclinic: 'drbarvaliaclinic.bahmnilite.in',
         IN0310001453: 'sukhveenhospital.bahmni.in',
+        'IN2710000190': 'sukhveen-staging.bahmni.in'
     };
     function delegate(request) {
         var upperCaseHeaders = {};
