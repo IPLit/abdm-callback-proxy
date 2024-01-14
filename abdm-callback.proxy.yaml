@@ -20,50 +20,61 @@ data:
         IN0310001453: 'sukhveenhospital.bahmni.in',
         'IN2710000190': 'sukhveen-staging.bahmni.in'
     };
-    function delegate(request) {
-        var upperCaseHeaders = {};
-        Object.keys(request.headersIn).forEach(function (headerKey) {
-            // request.log('request headersIn headerKey ' + headerKey);
-            upperCaseHeaders[headerKey.toUpperCase()] = request.headersIn[headerKey];
-            // request.log('request headersIn key ' + headerKey.toUpperCase() + " = " + upperCaseHeaders[headerKey.toUpperCase()]);
-        });
-        if (upperCaseHeaders['X-HIU-ID'] &&
-            delegateRepository.hasOwnProperty(upperCaseHeaders['X-HIU-ID'].toString())) {
-            request.log("routing for headersIn.X-HIU-ID: " + upperCaseHeaders['X-HIU-ID']);
-            request.internalRedirect("/delegate?delegate_url=" + delegateUrl(request.uri, upperCaseHeaders['X-HIU-ID']));
-        }
-        else if (upperCaseHeaders['X-HIP-ID'] &&
-            delegateRepository.hasOwnProperty(upperCaseHeaders['X-HIP-ID'].toString())) {
-            request.log("routing for headersIn.X-HIP-ID: " + upperCaseHeaders['X-HIP-ID']);
-            request.internalRedirect("/delegate?delegate_url=" + delegateUrl(request.uri, upperCaseHeaders['X-HIP-ID']));
-        }
-        else {
-            request.log("No heders matched - showing summary");
-            if (upperCaseHeaders['X-HIP-ID']) {
-                request.log("routing for headersIn.X-HIP-ID: " + upperCaseHeaders['X-HIP-ID']);
-            }
-            else if (upperCaseHeaders['X-HIU-ID']) {
-                request.log("routing for headersIn.X-HIU-ID: " + upperCaseHeaders['X-HIU-ID']);
-            }
-            var summary = void 0;
-            summary = 'JS summary\n\n';
-            summary += 'Method: ' + request.method + '\n';
-            summary += 'HTTP version: ' + request.httpVersion + '\n';
-            summary += 'Host: ' + request.headersIn.host + '\n';
-            summary += 'Remote Address: ' + request.remoteAddress + '\n';
-            summary += 'URI: ' + request.uri + '\n';
-            request.status = 200;
-            request.headersOut['Content-Type'] = 'text/plain; charset=utf-8';
-            request.sendHeader();
-            request.send(summary);
-            request.finish();
-        }
-    }
-    function delegateUrl(requestUri, key) {
-        var delegatePath = delegateRepository[key] + requestUri.replace(/callback/i, 'hiprovider');
-        return delegatePath;
-    }
-    export default { delegate: delegate };
+
+    function delegate(request: NginxHTTPRequest) {
+      if (
+        request.headersIn['X-HIU-ID'] &&
+        delegateRepository.hasOwnProperty(request.headersIn['X-HIU-ID'].toString())
+      ) {
+        request.log(
+          `routing for headersIn.X-HIU-ID: ${request.headersIn['X-HIU-ID']}`,
+        );
+        request.internalRedirect(
+          `/delegate?delegate_url=${delegateUrl(
+            request.uri,
+            request.headersIn['X-HIU-ID'],
+          )}`,
+        );
+      } else if (
+        request.headersIn['X-HIP-ID'] &&
+        delegateRepository.hasOwnProperty(request.headersIn['X-HIP-ID'].toString())
+      ) {
+        request.log(
+          `routing for headersIn.X-HIP-ID: ${request.headersIn['X-HIP-ID']}`,
+        );
+        request.internalRedirect(
+          `/delegate?delegate_url=${delegateUrl(
+            request.uri,
+            request.headersIn['X-HIP-ID'],
+          )}`,
+        );
+      } else {
+        request.log(`No heders matched - showing summary`);
+        let summary: string;
+        summary = 'JS summary\n\n';
+        summary += 'Method: ' + request.method + '\n';
+        summary += 'HTTP version: ' + request.httpVersion + '\n';
+        summary += 'Host: ' + request.headersIn.host + '\n';
+        summary += 'Remote Address: ' + request.remoteAddress + '\n';
+        summary += 'URI: ' + request.uri + '\n';
+    
+        request.status = 200;
+        request.headersOut['Content-Type'] = 'text/plain; charset=utf-8';
+        request.sendHeader();
+        request.send(summary);
+    
+        request.finish();
+      }
+}
+
+function delegateUrl(requestUri: String, key: string): string {
+  const delegatePath =
+    delegateRepository[key] + requestUri.replace(/callback/i, 'hiprovider');
+
+  return delegatePath;
+}
+
+export default { delegate };
 ---
 apiVersion: apps/v1
 kind: Deployment
